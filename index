@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MD Rakibul Haque – Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!--
+  ════════════════════════════════════════════════════════
+  FILE STRUCTURE — place these files next to index.html:
+
+  rakibul-portfolio/
+  ├── index.html
+  ├── cv.pdf                        ← your CV
+  ├── images/
+  │   ├── hero.jpg                  ← Hero section photo
+  │   └── about.jpg                 ← About section photo
+  └── certificates/
+      └── plc-cert.jpg              ← PLC certificate image
+          (add more as needed)
+  ════════════════════════════════════════════════════════
+  -->
+
+  <style>
+    /* ══════════════════════════════════
+       DESIGN TOKENS
+    ══════════════════════════════════ */
+    :root {
+      --navy:       #0a1628;
+      --navy-mid:   #0f2044;
+      --navy-light: #1a3560;
+      --gold:       #c9a84c;
+      --gold-light: #e8c97a;
+      --white:      #f4f5f7;
+      --muted:      #8a9bb8;
+      --dark:       #060e1c;
+      --text:       #2a3a55;
+    }
+
+    /* ══════════════════════════════════
+       RESET & BASE
+    ══════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--white);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font-family: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ══════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════ */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      transition: background .35s, box-shadow .35s;
+      background: transparent;
+    }
+    #navbar.scrolled {
+      background: var(--dark);
+      box-shadow: 0 2px 24px rgba(0,0,0,.5);
+      border-bottom: 1px solid var(--navy-light);
+    }
+    .nav-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; font-weight: 700;
+      color: var(--white); cursor: pointer;
+      letter-spacing: .04em; user-select: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; }
+    .nav-links a {
+      color: rgba(244,245,247,.72); padding: .5rem .75rem;
+      font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+      transition: color .2s; position: relative; font-weight: 500;
+    }
+    .nav-links a.active { color: var(--gold); }
+    .nav-links a.active::after {
+      content: ''; position: absolute; bottom: 3px; left: 50%;
+      transform: translateX(-50%); width: 4px; height: 4px;
+      border-radius: 50%; background: var(--gold);
+    }
+    .nav-cv-btn {
+      display: flex; align-items: center; gap: .4rem;
+      padding: .42rem .9rem; background: rgba(201,168,76,.1);
+      border: 1px solid rgba(201,168,76,.45); border-radius: 4px;
+      color: var(--gold); font-size: .72rem; letter-spacing: .1em;
+      text-transform: uppercase; font-weight: 600; transition: background .2s;
+    }
+    .nav-cv-btn:hover { background: rgba(201,168,76,.2); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white); border-radius: 2px; transition: all .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+    .mobile-menu {
+      display: none; flex-direction: column;
+      background: var(--dark); padding: 1rem 2rem 1.5rem;
+      border-top: 1px solid var(--navy-light);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--white); padding: .75rem 0; font-size: 1rem;
+      border-bottom: 1px solid var(--navy-light);
+    }
+    .mobile-cv {
+      display: flex; align-items: center; gap: .5rem; margin-top: 1rem;
+      padding: .7rem 1.25rem; width: fit-content; border-radius: 4px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--navy) !important; font-weight: 700; font-size: .85rem;
+      border-bottom: none !important;
+    }
+
+    /* ══════════════════════════════════
+       HERO
+    ══════════════════════════════════ */
+    #home {
+      position: relative; min-height: 100vh;
+      background: var(--navy); overflow: hidden;
+      display: flex; align-items: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 30% 50%, rgba(26,53,96,.55) 0%, var(--navy) 70%);
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr;
+      width: 100%; max-width: 1300px; margin: 0 auto;
+      padding: 5rem 3rem 3rem; gap: 3rem; align-items: center;
+      min-height: 100vh;
+    }
+    .hero-img-col { display: flex; justify-content: center; align-items: center; }
+    .hero-img-wrap { position: relative; width: min(420px, 42vw); aspect-ratio: 3/4; }
+    .hero-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 8px; position: relative; z-index: 2;
+      box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 1px var(--navy-light);
+    }
+    .hero-img-ring {
+      position: absolute; inset: -16px; border-radius: 12px;
+      border: 2px solid rgba(201,168,76,.25); z-index: 1;
+    }
+    .hero-img-corner {
+      position: absolute; bottom: -20px; right: -20px;
+      width: 110px; height: 110px;
+      border: 3px solid var(--gold); border-radius: 4px; z-index: 0;
+    }
+    .hero-text-col { display: flex; flex-direction: column; gap: 1.1rem; }
+    .hero-eyebrow {
+      font-size: .73rem; letter-spacing: .28em; text-transform: uppercase;
+      color: var(--gold); font-style: italic;
+    }
+    .hero-name {
+      font-size: clamp(1.6rem, 3.2vw, 3.2rem);
+      color: var(--white); line-height: 1.1; letter-spacing: .02em;
+      white-space: nowrap;
+    }
+    .hero-title-bar { display: flex; align-items: center; gap: 1rem; }
+    .hero-title-line {
+      display: block; width: 40px; height: 2px; flex-shrink: 0;
+      background: linear-gradient(to right, var(--gold), var(--gold-light));
+      border-radius: 2px;
+    }
+    .hero-title {
+      font-size: clamp(.72rem, 1.2vw, 1rem); color: var(--gold);
+      letter-spacing: .12em; text-transform: uppercase; font-style: italic;
+      font-family: 'Source Sans 3', sans-serif; font-weight: 500;
+      white-space: nowrap;
+    }
+    .hero-intro {
+      font-size: clamp(.88rem, 1.3vw, .98rem);
+      color: rgba(244,245,247,.66); line-height: 1.85;
+      max-width: 480px; text-align: justify;
+    }
+    .hero-ctas { display: flex; gap: .85rem; flex-wrap: wrap; margin-top: .3rem; }
+    .social-row { display: flex; gap: .5rem; margin-top: .25rem; }
+    .social-row a {
+      color: rgba(244,245,247,.4); display: flex; align-items: center;
+      padding: .5rem; border-radius: 50%; transition: color .2s, transform .2s;
+    }
+    .social-row a:hover { color: var(--gold); transform: translateY(-2px); }
+    .scroll-hint {
+      position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 2;
+    }
+    .scroll-line {
+      width: 1px; height: 36px;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+    }
+    .scroll-text {
+      color: var(--muted); font-size: .6rem;
+      letter-spacing: .25em; text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════
+       BUTTONS
+    ══════════════════════════════════ */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .75rem 1.8rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--navy); font-weight: 700; font-size: .78rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      border: none; border-radius: 4px;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .75rem 1.5rem;
+      background: rgba(201,168,76,.12); color: var(--gold);
+      font-weight: 700; font-size: .78rem; letter-spacing: .1em;
+      text-transform: uppercase;
+      border: 1px solid rgba(201,168,76,.5); border-radius: 4px;
+      transition: background .2s;
+    }
+    .btn-secondary:hover { background: rgba(201,168,76,.22); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .75rem 1.5rem; background: transparent;
+      color: var(--gold); font-weight: 700; font-size: .78rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      border: 2px solid var(--gold); border-radius: 4px;
+      transition: background .2s;
+    }
+    .btn-outline:hover { background: rgba(201,168,76,.1); }
+    .btn-outline-dark {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .75rem 1.5rem; background: transparent;
+      color: var(--navy-light); font-weight: 700; font-size: .78rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      border: 2px solid var(--navy-light); border-radius: 4px;
+      transition: background .2s;
+    }
+    .btn-outline-dark:hover { background: rgba(10,22,40,.08); }
+
+    /* ══════════════════════════════════
+       SECTIONS
+    ══════════════════════════════════ */
+    .section { padding: 6rem 0; background: var(--white); }
+    .section-alt { background: var(--navy); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .section-header { margin-bottom: 3.5rem; text-align: center; }
+    .section-sub {
+      font-size: .73rem; letter-spacing: .28em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .4rem; font-style: italic;
+    }
+    .section-alt .section-sub { color: var(--gold-light); }
+    .section-title { font-size: clamp(1.7rem, 3vw, 2.4rem); color: var(--navy); margin: 0 0 1rem; }
+    .section-alt .section-title { color: var(--white); }
+    .section-line { display: flex; justify-content: center; }
+    .section-line-fill {
+      width: 56px; height: 3px;
+      background: linear-gradient(to right, var(--gold), var(--gold-light));
+      border-radius: 2px;
+    }
+
+    /* ══════════════════════════════════
+       ABOUT
+    ══════════════════════════════════ */
+    .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: center; }
+    .about-img-col { display: flex; justify-content: center; }
+    .about-img-frame { position: relative; width: 280px; height: 320px; }
+    .about-img-frame img {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 4px; position: relative; z-index: 1;
+      box-shadow: 0 20px 60px rgba(10,22,40,.2);
+    }
+    .about-img-accent {
+      position: absolute; bottom: -12px; right: -12px;
+      width: 100%; height: 100%;
+      border: 3px solid var(--gold); border-radius: 4px; z-index: 0;
+    }
+    .about-text { display: flex; flex-direction: column; gap: 1.5rem; }
+    .about-para { font-size: 1.02rem; line-height: 1.88; color: var(--text); text-align: justify; }
+    .about-meta {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .75rem 2rem;
+      padding: 1.4rem; background: rgba(10,22,40,.06);
+      border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0;
+    }
+    .meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .meta-label { font-size: .66rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+    .meta-value { font-size: .92rem; color: var(--navy); font-weight: 600; }
+    .about-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* ══════════════════════════════════
+       TIMELINE
+    ══════════════════════════════════ */
+    .timeline { display: flex; flex-direction: column; max-width: 860px; margin: 0 auto; }
+    .tl-item { display: flex; gap: 1.5rem; align-items: flex-start; }
+    .tl-spine { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; padding-top: 1.6rem; }
+    .tl-dot {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 2px solid var(--gold); display: flex;
+      align-items: center; justify-content: center;
+      background: var(--navy); flex-shrink: 0; z-index: 1;
+      transition: background .3s, box-shadow .3s;
+    }
+    .tl-dot-inner { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+    .tl-item:hover .tl-dot { background: var(--gold); box-shadow: 0 0 16px rgba(201,168,76,.5); }
+    .tl-line {
+      width: 2px; flex: 1; min-height: 36px;
+      background: linear-gradient(to bottom, rgba(201,168,76,.45), rgba(26,53,96,.35));
+      margin: 4px 0;
+    }
+    .tl-card {
+      flex: 1; background: var(--white); border: 1px solid #dce3ef;
+      border-radius: 8px; padding: 1.5rem 1.75rem; margin-bottom: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+      box-shadow: 0 2px 16px rgba(10,22,40,.06);
+    }
+    .tl-card-dark { background: var(--navy-mid); border: 1px solid var(--navy-light); box-shadow: none; }
+    .tl-item:hover .tl-card { transform: translateX(5px); box-shadow: 0 8px 32px rgba(10,22,40,.18); border-color: rgba(201,168,76,.45); }
+    .tl-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: .75rem; flex-wrap: wrap; }
+    .tl-title { font-size: 1.08rem; color: var(--navy); margin: 0 0 .25rem; }
+    .tl-card-dark .tl-title { color: var(--white); }
+    .tl-subtitle { font-size: .9rem; }
+    .tl-company { color: var(--gold); font-weight: 600; font-style: italic; }
+    .tl-loc { color: var(--muted); font-size: .82rem; }
+    .tl-badge {
+      font-size: .68rem; letter-spacing: .08em; padding: .3rem .8rem;
+      border-radius: 20px; background: rgba(201,168,76,.12);
+      color: var(--gold); border: 1px solid rgba(201,168,76,.35);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .tl-desc { font-size: .91rem; line-height: 1.76; color: var(--text); margin: 0 0 1rem; }
+    .tl-card-dark .tl-desc { color: var(--muted); }
+    .tl-list { display: flex; flex-direction: column; gap: .4rem; }
+    .tl-list li { font-size: .875rem; color: #3a4f70; display: flex; align-items: flex-start; gap: .5rem; line-height: 1.5; }
+    .tl-card-dark .tl-list li { color: rgba(244,245,247,.75); }
+    .tl-bullet { color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+    .tl-accent {
+      position: absolute; bottom: 0; left: 0; height: 3px; width: 0;
+      background: linear-gradient(to right, var(--gold), var(--gold-light));
+      transition: width .4s ease; border-radius: 0 0 0 8px;
+    }
+    .tl-item:hover .tl-accent { width: 100%; }
+
+    /* ══════════════════════════════════
+       ACHIEVEMENT GALLERY
+    ══════════════════════════════════ */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1.5rem; }
+    .gallery-card {
+      background: var(--navy-mid); border: 1px solid var(--navy-light);
+      border-radius: 10px; overflow: hidden; cursor: pointer;
+      transition: transform .25s, box-shadow .25s, border-color .25s; outline: none;
+    }
+    .gallery-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,.5); border-color: rgba(201,168,76,.5); }
+    .gallery-img-wrap { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--navy); }
+    .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+    .gallery-card:hover .gallery-img-wrap img { transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute; inset: 0; background: rgba(6,14,28,0);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: .5rem;
+      transition: background .25s; pointer-events: none;
+    }
+    .gallery-card:hover .gallery-overlay { background: rgba(6,14,28,.55); }
+    .gallery-zoom-icon { font-size: 1.8rem; opacity: 0; transform: scale(.7); transition: all .25s; }
+    .gallery-zoom-text { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); opacity: 0; transition: opacity .25s; }
+    .gallery-card:hover .gallery-zoom-icon { opacity: 1; transform: scale(1); }
+    .gallery-card:hover .gallery-zoom-text { opacity: 1; }
+    .gallery-info { padding: 1rem 1.25rem 1.25rem; }
+    .gallery-info-top { display: flex; justify-content: space-between; align-items: center; gap: .5rem; margin-bottom: .6rem; flex-wrap: wrap; }
+    .gallery-badge { font-size: .63rem; letter-spacing: .1em; text-transform: uppercase; padding: .22rem .7rem; border-radius: 20px; font-weight: 600; }
+    .gallery-date { font-size: .72rem; color: var(--muted); }
+    .gallery-title { font-size: .95rem; font-weight: 700; color: var(--white); margin: 0 0 .3rem; line-height: 1.4; }
+    .gallery-issuer { font-size: .8rem; color: var(--muted); line-height: 1.4; }
+
+    /* Lightbox */
+    #lightbox {
+      display: none; position: fixed; inset: 0;
+      background: rgba(6,14,28,.94); z-index: 2000;
+      align-items: center; justify-content: center;
+      padding: 1.5rem; backdrop-filter: blur(6px);
+    }
+    #lightbox.open { display: flex; }
+    .lb-box {
+      position: relative; background: var(--navy-mid);
+      border-radius: 10px; border: 1px solid var(--navy-light);
+      max-width: 900px; width: 100%; max-height: 90vh;
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,.7);
+    }
+    .lb-close {
+      position: absolute; top: 12px; right: 12px; z-index: 10;
+      background: rgba(6,14,28,.8); border: 1px solid var(--navy-light);
+      color: var(--white); width: 36px; height: 36px; border-radius: 50%;
+      font-size: 1rem; display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s;
+    }
+    .lb-close:hover { background: rgba(201,168,76,.2); border-color: rgba(201,168,76,.5); }
+    .lb-arrow {
+      position: absolute; top: 45%; transform: translateY(-50%); z-index: 10;
+      background: rgba(6,14,28,.75); border: 1px solid var(--navy-light);
+      color: var(--white); width: 44px; height: 44px; border-radius: 50%;
+      font-size: 1.6rem; display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s; line-height: 1;
+    }
+    .lb-arrow:hover { background: rgba(201,168,76,.18); border-color: rgba(201,168,76,.45); }
+    .lb-prev { left: 12px; }
+    .lb-next { right: 12px; }
+    .lb-img-wrap { flex: 1; overflow: hidden; background: var(--dark); display: flex; align-items: center; justify-content: center; min-height: 0; }
+    .lb-img-wrap img { max-width: 100%; max-height: 68vh; object-fit: contain; }
+    .lb-info-bar { padding: 1rem 1.5rem; border-top: 1px solid var(--navy-light); display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .lb-title { font-size: 1rem; color: var(--white); margin: 0 0 .2rem; }
+    .lb-issuer { font-size: .82rem; color: var(--gold); font-style: italic; }
+    .lb-meta { display: flex; flex-direction: column; align-items: flex-end; gap: .2rem; }
+    .lb-date { font-size: .78rem; color: var(--muted); }
+    .lb-counter { font-size: .72rem; color: var(--muted); }
+
+    /* ══════════════════════════════════
+       PUBLICATIONS
+    ══════════════════════════════════ */
+    .pub-list { display: flex; flex-direction: column; gap: 1.25rem; max-width: 920px; margin: 0 auto; }
+    .pub-card {
+      display: flex; gap: 1.5rem;
+      background: var(--navy-mid); border: 1px solid var(--navy-light);
+      border-radius: 8px; padding: 1.75rem 2rem;
+      position: relative; overflow: hidden;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+    }
+    .pub-card:hover { transform: translateX(5px); border-color: rgba(201,168,76,.45); box-shadow: 0 12px 40px rgba(0,0,0,.4); }
+    .pub-index { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--navy-light); line-height: 1; font-style: italic; flex-shrink: 0; width: 48px; padding-top: .25rem; }
+    .pub-body { flex: 1; display: flex; flex-direction: column; gap: .6rem; }
+    .pub-top-row { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+    .pub-type-badge { font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; padding: .25rem .75rem; border-radius: 20px; font-weight: 700; background: rgba(26,42,58,.9); color: #56b1f7; border: 1px solid #1e4060; }
+    .pub-year { font-size: .78rem; color: var(--muted); letter-spacing: .1em; }
+    .pub-title { font-size: 1.05rem; color: var(--white); line-height: 1.45; }
+    .pub-authors { font-size: .85rem; color: var(--gold); font-style: italic; }
+    .pub-journal { font-size: .83rem; color: var(--muted); }
+    .pub-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .pub-tag { font-size: .65rem; padding: .22rem .65rem; border-radius: 20px; background: var(--navy-light); color: var(--gold-light); border: 1px solid rgba(201,168,76,.2); letter-spacing: .04em; }
+    .pub-doi { display: inline-flex; align-items: center; gap: .4rem; color: var(--gold); font-size: .82rem; font-style: italic; width: fit-content; transition: opacity .2s; }
+    .pub-doi:hover { opacity: .75; }
+    .pub-accent { position: absolute; top: 0; left: 0; width: 3px; height: 0; background: linear-gradient(to bottom, var(--gold), var(--gold-light)); transition: height .4s ease; }
+    .pub-card:hover .pub-accent { height: 100%; }
+
+    /* ══════════════════════════════════
+       SKILLS
+    ══════════════════════════════════ */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1.75rem; }
+    .skill-group { padding: 2rem; background: var(--white); border: 1px solid #dce3ef; border-radius: 8px; box-shadow: 0 2px 18px rgba(10,22,40,.06); transition: transform .25s, box-shadow .25s; }
+    .skill-group:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(10,22,40,.1); }
+    .skill-group-title { font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; color: var(--navy); margin-bottom: 1.25rem; display: flex; align-items: center; gap: .75rem; font-family: 'Source Sans 3', sans-serif; font-weight: 700; }
+    .skill-group-line { display: block; width: 22px; height: 2px; background: var(--gold); flex-shrink: 0; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .skill-tag { padding: .4rem 1rem; border-radius: 4px; background: rgba(10,22,40,.07); color: var(--navy-light); font-size: .875rem; border: 1px solid rgba(10,22,40,.12); transition: background .2s, color .2s; }
+    .skill-tag:hover { background: rgba(201,168,76,.12); color: var(--navy); }
+
+    /* ══════════════════════════════════
+       CONTACT
+    ══════════════════════════════════ */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; align-items: start; }
+    .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-intro { color: var(--muted); line-height: 1.85; font-size: .98rem; }
+    .contact-item { display: flex; align-items: center; gap: 1rem; }
+    .contact-icon-wrap { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: var(--navy-light); border-radius: 8px; color: var(--gold); flex-shrink: 0; border: 1px solid rgba(201,168,76,.25); }
+    .contact-label { font-size: .66rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+    .contact-value { font-size: .95rem; color: var(--white); }
+    a.contact-value:hover { color: var(--gold); }
+    .contact-social-row { display: flex; gap: .6rem; margin-top: .25rem; }
+    .contact-social-btn { color: var(--muted); display: flex; align-items: center; padding: .55rem; border-radius: 6px; border: 1px solid var(--navy-light); background: var(--navy-mid); transition: color .2s, border-color .2s; }
+    .contact-social-btn:hover { color: var(--gold); border-color: rgba(201,168,76,.4); }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-input { width: 100%; padding: .88rem 1rem; background: var(--navy-mid); border: 1px solid var(--navy-light); border-radius: 6px; color: var(--white); font-size: .93rem; font-family: 'Source Sans 3', sans-serif; outline: none; transition: border-color .2s; }
+    .form-input:focus { border-color: var(--gold); }
+    .form-input::placeholder { color: var(--muted); }
+    textarea.form-input { resize: vertical; }
+
+    /* ══════════════════════════════════
+       COPYRIGHT
+    ══════════════════════════════════ */
+    .copyright-bar { background: var(--dark); border-top: 1px solid var(--navy-light); padding: 1.25rem 2rem; text-align: center; }
+    .copyright-bar p { color: var(--muted); font-size: .82rem; letter-spacing: .04em; }
+    .copyright-bar span { color: var(--gold); }
+
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .nav-cv-btn { display: none; }
+      .hamburger { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; padding: 5rem 2rem 3rem; text-align: center; }
+      .hero-img-col { order: -1; }
+      .hero-img-wrap { width: min(280px, 70vw); }
+      .hero-title-bar { justify-content: center; }
+      .hero-intro { text-align: center; margin: 0 auto; }
+      .hero-ctas { justify-content: center; }
+      .social-row { justify-content: center; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .section { padding: 4rem 0; }
+      .hero-name { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+      .hero-title { font-size: .68rem; letter-spacing: .08em; }
+      .pub-card { flex-direction: column; }
+      .pub-index { font-size: 1.8rem; width: auto; }
+      .about-meta { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     NAVBAR
+══════════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#home" onclick="return scrollToSection('home')">MRH<span>.</span></a>
+    <div class="nav-links">
+      <a href="#home"         onclick="return scrollToSection('home')">Home</a>
+      <a href="#about"        onclick="return scrollToSection('about')">About</a>
+      <a href="#experience"   onclick="return scrollToSection('experience')">Experience</a>
+      <a href="#education"    onclick="return scrollToSection('education')">Education</a>
+      <a href="#achievements" onclick="return scrollToSection('achievements')">Achievements</a>
+      <a href="#publications" onclick="return scrollToSection('publications')">Publications</a>
+      <a href="#skills"       onclick="return scrollToSection('skills')">Skills</a>
+      <a href="#contact"      onclick="return scrollToSection('contact')">Contact</a>
+    </div>
+    <a href="cv.pdf" download class="nav-cv-btn">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      CV
+    </a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#home"         onclick="return scrollToSection('home')">Home</a>
+    <a href="#about"        onclick="return scrollToSection('about')">About</a>
+    <a href="#experience"   onclick="return scrollToSection('experience')">Experience</a>
+    <a href="#education"    onclick="return scrollToSection('education')">Education</a>
+    <a href="#achievements" onclick="return scrollToSection('achievements')">Achievements</a>
+    <a href="#publications" onclick="return scrollToSection('publications')">Publications</a>
+    <a href="#skills"       onclick="return scrollToSection('skills')">Skills</a>
+    <a href="#contact"      onclick="return scrollToSection('contact')">Contact</a>
+    <a href="cv.pdf" download class="mobile-cv">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Download CV
+    </a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO
+     Image file: images/hero.jpg
+══════════════════════════════════ -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+
+    <div class="hero-img-col">
+      <div class="hero-img-wrap">
+        <img
+          src="images/hero.jpg"
+          alt="MD Rakibul Haque"
+          onerror="this.src='https://placehold.co/420x560/0a1628/c9a84c?text=hero.jpg'" />
+        <div class="hero-img-ring"></div>
+        <div class="hero-img-corner"></div>
+      </div>
+    </div>
+
+    <div class="hero-text-col">
+      <p class="hero-eyebrow">Welcome to my portfolio</p>
+      <h1 class="hero-name">MD Rakibul Haque</h1>
+      <div class="hero-title-bar">
+        <span class="hero-title-line"></span>
+        <p class="hero-title">Assistant Lab Officer &amp; EEE Graduate</p>
+      </div>
+      <p class="hero-intro">
+        Hello! I'm MD Rakibul Haque. Here you can explore my work, professional experience, and the journey that has shaped my career so far. This platform highlights my academic background, technical skills, research contributions, and practical experiences gained through my roles at North South University. Feel free to look around and learn more about my projects, achievements, and the areas where I continue to grow and develop professionally.
+      </p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="scrollToSection('achievements')">Achievements</button>
+        <a href="cv.pdf" download class="btn-secondary">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download CV
+        </a>
+        <button class="btn-outline" onclick="scrollToSection('contact')">Contact Me</button>
+      </div>
+      <div class="social-row">
+        <a href="https://linkedin.com/in/rakibul-erar" target="_blank" rel="noreferrer" title="LinkedIn">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://www.researchgate.net/profile/Rakibul-Haque-5" target="_blank" rel="noreferrer" title="ResearchGate">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.586 0H4.414A4.414 4.414 0 000 4.414v15.172A4.414 4.414 0 004.414 24h15.172A4.414 4.414 0 0024 19.586V4.414A4.414 4.414 0 0019.586 0zM12.24 16.932c-.88 1.265-2.16 1.917-3.79 1.917-2.66 0-4.56-1.99-4.56-4.73 0-2.75 1.92-4.76 4.58-4.76 1.59 0 2.85.63 3.72 1.87l-1.17.83c-.6-.86-1.44-1.29-2.51-1.29-1.76 0-3.03 1.32-3.03 3.33 0 2 1.27 3.31 3.04 3.31 1.08 0 1.93-.44 2.54-1.32l1.15.83zm4.94 1.72h-1.55v-3.97c0-1.08-.45-1.63-1.34-1.63-.51 0-.94.2-1.27.6-.33.4-.5.93-.5 1.59v3.41h-1.55V9.5h1.55v3.2c.55-.78 1.32-1.17 2.32-1.17 1.57 0 2.34.96 2.34 2.88v4.23z"/></svg>
+        </a>
+        <a href="https://scholar.google.com/citations?user=rakibul-haque" target="_blank" rel="noreferrer" title="Google Scholar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5h3.6v7.8c0 .9.7 1.7 1.6 1.7h1.6v5h10.4v-5h1.6c.9 0 1.6-.8 1.6-1.7V9.5H24L12 0z"/></svg>
+        </a>
+        <a href="https://orcid.org/0009-0003-4578-948X" target="_blank" rel="noreferrer" title="ORCID">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 01-.947-.947c0-.516.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 3.938-2.484 3.938-3.722 0-2.016-1.284-3.722-3.985-3.722h-2.25z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">scroll</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     ABOUT
+     Image file: images/about.jpg
+══════════════════════════════════ -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-sub">Who I am &amp; what I bring</p>
+      <h2 class="section-title">About Me</h2>
+      <div class="section-line"><div class="section-line-fill"></div></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-img-col">
+        <div class="about-img-frame">
+          <img
+            src="images/about.jpg"
+            alt="About MD Rakibul Haque"
+            onerror="this.src='https://placehold.co/280x320/0a1628/c9a84c?text=about.jpg'" />
+          <div class="about-img-accent"></div>
+        </div>
+      </div>
+      <div class="about-text">
+        <p class="about-para">
+          Detail-oriented Electrical and Electronics Engineering graduate with professional experience at North South University as a Research Assistant and Assistant Lab Officer. Experienced in data analysis, problem solving, and supporting operational activities in academic and technical environments. Skilled in analytical tools such as Excel, MATLAB, and Python, with hands-on experience managing laboratory operations, coordinating experiments, and assisting research projects. A strong team player with good organizational skills and attention to detail, able to learn new systems quickly and apply structured thinking to solve problems. Seeking a corporate role where analytical ability, adaptability, and operational support skills can contribute to organizational growth and efficiency.
+        </p>
+        <div class="about-meta">
+          <div class="meta-item"><span class="meta-label">Email</span><span class="meta-value">rakibul.haque.3112@gmail.com</span></div>
+          <div class="meta-item"><span class="meta-label">Phone</span><span class="meta-value">01521-544446</span></div>
+          <div class="meta-item"><span class="meta-label">Location</span><span class="meta-value">Dhaka, Bangladesh</span></div>
+          <div class="meta-item"><span class="meta-label">IELTS</span><span class="meta-value">6.5 (British Council)</span></div>
+        </div>
+        <div class="about-btns">
+          <a href="mailto:rakibul.haque.3112@gmail.com" class="btn-primary">Say Hello →</a>
+          <a href="cv.pdf" download class="btn-outline-dark">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download CV
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     EXPERIENCE
+══════════════════════════════════ -->
+<section id="experience" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-sub">My professional journey</p>
+      <h2 class="section-title">Experience</h2>
+      <div class="section-line"><div class="section-line-fill"></div></div>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-spine">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-card tl-card-dark">
+          <div class="tl-top">
+            <div>
+              <h3 class="tl-title">Assistant Lab Officer (Part-time)</h3>
+              <p class="tl-subtitle"><span class="tl-company">North South University</span> <span class="tl-loc">· Dhaka, Bangladesh</span></p>
+            </div>
+            <span class="tl-badge">July 2024 – Present</span>
+          </div>
+          <p class="tl-desc">Supporting laboratory operations within the Department of Electrical and Computer Engineering. Responsible for managing and maintaining lab equipment, supervising student experiments, and ensuring smooth day-to-day functioning of lab sessions.</p>
+          <ul class="tl-list">
+            <li><span class="tl-bullet">▸</span> Circuit Lab management and supervision</li>
+            <li><span class="tl-bullet">▸</span> Digital Logic Design Lab coordination</li>
+            <li><span class="tl-bullet">▸</span> Student guidance during practical sessions</li>
+          </ul>
+          <div class="tl-accent"></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-spine">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-card tl-card-dark">
+          <div class="tl-top">
+            <div>
+              <h3 class="tl-title">Research Assistant (Part-time)</h3>
+              <p class="tl-subtitle"><span class="tl-company">North South University</span> <span class="tl-loc">· Dhaka, Bangladesh</span></p>
+            </div>
+            <span class="tl-badge">May 2023 – February 2024</span>
+          </div>
+          <p class="tl-desc">Conducted research in Microwave Engineering and 5G antenna design under the Department of Electrical and Computer Engineering. Contributed to multiple IEEE-published papers on textile-based and wearable antennas for Wireless Body Area Networks.</p>
+          <ul class="tl-list">
+            <li><span class="tl-bullet">▸</span> Research fields: Microwave Engineering, 5G Antenna Design, EM Wave Propagation</li>
+            <li><span class="tl-bullet">▸</span> Published 5 IEEE Papers</li>
+            <li><span class="tl-bullet">▸</span> Simulation and analysis using CST Studio Suite</li>
+          </ul>
+          <div class="tl-accent"></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-spine">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        </div>
+        <div class="tl-card tl-card-dark">
+          <div class="tl-top">
+            <div>
+              <h3 class="tl-title">PLC &amp; HMI Industrial Automation Training</h3>
+              <p class="tl-subtitle"><span class="tl-company">BCSIR – Pilot Plant and Process Development Center</span> <span class="tl-loc">· Dhaka, Bangladesh</span></p>
+            </div>
+            <span class="tl-badge">August 2025 – November 2025</span>
+          </div>
+          <p class="tl-desc">Completed professional training in industrial automation under the Ministry of Science and Technology, Government of Bangladesh. Gained hands-on expertise with industry-leading PLC and HMI platforms used in real-world automation environments.</p>
+          <ul class="tl-list">
+            <li><span class="tl-bullet">▸</span> Siemens, Allen-Bradley, and Wecon Technology platforms</li>
+            <li><span class="tl-bullet">▸</span> Industrial automation concepts and workflows</li>
+            <li><span class="tl-bullet">▸</span> Issued by: Bangladesh Council of Scientific and Industrial Research (BCSIR)</li>
+          </ul>
+          <div class="tl-accent"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     EDUCATION
+══════════════════════════════════ -->
+<section id="education" class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-sub">Academic background &amp; certifications</p>
+      <h2 class="section-title">Education</h2>
+      <div class="section-line"><div class="section-line-fill"></div></div>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-spine">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-card">
+          <div class="tl-top">
+            <div>
+              <h3 class="tl-title">Bachelor of Science: Electrical and Electronics Engineering (EEE)</h3>
+              <p class="tl-subtitle"><span class="tl-company">North South University</span> <span class="tl-loc">· Dhaka, Bangladesh</span></p>
+            </div>
+            <span class="tl-badge">January 2018 – November 2023</span>
+          </div>
+          <p class="tl-desc">Completed a four-year undergraduate program in Electrical and Electronics Engineering with a focus on microwave engineering, antenna design, and embedded systems. Actively participated in research projects resulting in multiple IEEE publications.</p>
+          <ul class="tl-list">
+            <li><span class="tl-bullet">▸</span> CGPA: 3.23 / 4.00 (86%)</li>
+            <li><span class="tl-bullet">▸</span> Research focus: 5G Antenna Design &amp; WBAN</li>
+            <li><span class="tl-bullet">▸</span> Published 5 IEEE Papers</li>
+          </ul>
+          <div class="tl-accent"></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-spine">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-card">
+          <div class="tl-top">
+            <div>
+              <h3 class="tl-title">Higher Secondary Certificate (HSC) – Science</h3>
+              <p class="tl-subtitle"><span class="tl-company">Govt. Shah Sultan College</span> <span class="tl-loc">· Bogura, Bangladesh</span></p>
+            </div>
+            <span class="tl-badge">July 2015 – April 2017</span>
+          </div>
+          <p class="tl-desc">Completed higher secondary education with a strong foundation in Physics, Chemistry, Mathematics, and Biology under the Science stream.</p>
+          <ul class="tl-list">
+            <li><span class="tl-bullet">▸</span> GPA: 4.83 / 5.00</li>
+          </ul>
+          <div class="tl-accent"></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-spine">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        </div>
+        <div class="tl-card">
+          <div class="tl-top">
+            <div>
+              <h3 class="tl-title">Secondary School Certificate (SSC) – Science</h3>
+              <p class="tl-subtitle"><span class="tl-company">Bogura Zilla School</span> <span class="tl-loc">· Bogura, Bangladesh</span></p>
+            </div>
+            <span class="tl-badge">January 2008 – April 2015</span>
+          </div>
+          <p class="tl-desc">Completed secondary education with full marks in the Science stream, demonstrating academic excellence from an early stage.</p>
+          <ul class="tl-list">
+            <li><span class="tl-bullet">▸</span> GPA: 5.00 / 5.00 (Perfect Score)</li>
+          </ul>
+          <div class="tl-accent"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     ACHIEVEMENTS GALLERY
+     Certificate image files:
+       certificates/plc-cert.jpg
+     (add more as: certificates/cert-2.jpg, etc.)
+══════════════════════════════════ -->
+<section id="achievements" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-sub">Certifications &amp; recognitions</p>
+      <h2 class="section-title">Achievements</h2>
+      <div class="section-line"><div class="section-line-fill"></div></div>
+    </div>
+    <div class="gallery-grid">
+
+      <!-- Certificate 1 — file: certificates/plc-cert.jpg -->
+      <div class="gallery-card" tabindex="0"
+           data-title="PLC &amp; HMI Training for Industrial Automation"
+           data-issuer="BCSIR – Ministry of Science &amp; Technology, Bangladesh"
+           data-date="August – November 2025"
+           onclick="openLightbox(this)">
+        <div class="gallery-img-wrap">
+          <img src="certificates/plc-cert.jpg" alt="PLC Certificate"
+               onerror="this.src='https://placehold.co/400x300/0f2044/c9a84c?text=plc-cert.jpg'" />
+          <div class="gallery-overlay">
+            <span class="gallery-zoom-icon">🔍</span>
+            <span class="gallery-zoom-text">View Certificate</span>
+          </div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-info-top">
+            <span class="gallery-badge" style="background:#1a2a3a;color:#56b1f7;border:1px solid #1e4060">Professional Training</span>
+            <span class="gallery-date">Aug – Nov 2025</span>
+          </div>
+          <h3 class="gallery-title">PLC &amp; HMI Training for Industrial Automation</h3>
+          <p class="gallery-issuer">BCSIR – Ministry of Science &amp; Technology, Bangladesh</p>
+        </div>
+      </div>
+
+      <!--
+      ════════════════════════════════════════════════════
+      TO ADD MORE CERTIFICATES — copy the block below,
+      remove the comment markers, and update the values:
+
+      <div class="gallery-card" tabindex="0"
+           data-title="Your Certificate Title"
+           data-issuer="Issuing Organization"
+           data-date="Month Year"
+           onclick="openLightbox(this)">
+        <div class="gallery-img-wrap">
+          <img src="certificates/cert-2.jpg" alt="Certificate"
+               onerror="this.src='https://placehold.co/400x300/0f2044/c9a84c?text=cert-2.jpg'" />
+          <div class="gallery-overlay">
+            <span class="gallery-zoom-icon">🔍</span>
+            <span class="gallery-zoom-text">View Certificate</span>
+          </div>
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-info-top">
+            <span class="gallery-badge" style="background:#1a3a1a;color:#6fcf97;border:1px solid #2d5a2d">Online Course</span>
+            <span class="gallery-date">Month Year</span>
+          </div>
+          <h3 class="gallery-title">Your Certificate Title</h3>
+          <p class="gallery-issuer">Issuing Organization</p>
+        </div>
+      </div>
+
+      Badge colour options:
+        Professional Training : background:#1a2a3a; color:#56b1f7; border:1px solid #1e4060
+        Online Course         : background:#1a3a1a; color:#6fcf97; border:1px solid #2d5a2d
+        Award                 : background:#3a2a00; color:#e8c97a; border:1px solid #604820
+        Honor                 : background:#2a1a3a; color:#bb86fc; border:1px solid #4a2060
+      ════════════════════════════════════════════════════
+      -->
+
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox overlay -->
+<div id="lightbox">
+  <div class="lb-box">
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+    <button class="lb-arrow lb-prev" id="lb-prev" onclick="lbNav(-1)">&#8249;</button>
+    <button class="lb-arrow lb-next" id="lb-next" onclick="lbNav(1)">&#8250;</button>
+    <div class="lb-img-wrap">
+      <img id="lb-img" src="" alt="" />
+    </div>
+    <div class="lb-info-bar">
+      <div>
+        <p class="lb-title" id="lb-title"></p>
+        <p class="lb-issuer" id="lb-issuer"></p>
+      </div>
+      <div class="lb-meta">
+        <span class="lb-date" id="lb-date"></span>
+        <span class="lb-counter" id="lb-counter"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PUBLICATIONS
+══════════════════════════════════ -->
+<section id="publications" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-sub">Research &amp; scholarly work</p>
+      <h2 class="section-title">Publications</h2>
+      <div class="section-line"><div class="section-line-fill"></div></div>
+    </div>
+    <div class="pub-list">
+
+      <div class="pub-card">
+        <div class="pub-index">01</div>
+        <div class="pub-body">
+          <div class="pub-top-row"><span class="pub-type-badge">Conference Paper</span><span class="pub-year">2024</span></div>
+          <h3 class="pub-title">Design and Analysis of a Compact 28 GHz Textile-Based Antenna for Wireless Body Area Network</h3>
+          <p class="pub-authors">MD Rakibul Haque</p>
+          <p class="pub-journal">IEEE Xplore</p>
+          <div class="pub-tags"><span class="pub-tag">28 GHz</span><span class="pub-tag">Textile Antenna</span><span class="pub-tag">WBAN</span><span class="pub-tag">5G</span><span class="pub-tag">mmWave</span></div>
+          <a href="https://ieeexplore.ieee.org/document/10427772" target="_blank" rel="noreferrer" class="pub-doi">View Publication <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="pub-accent"></div>
+      </div>
+
+      <div class="pub-card">
+        <div class="pub-index">02</div>
+        <div class="pub-body">
+          <div class="pub-top-row"><span class="pub-type-badge">Conference Paper</span><span class="pub-year">2025</span></div>
+          <h3 class="pub-title">28 GHz Lock and Key Shaped Flexible Textile Antenna Design for Wearable Wireless Communications</h3>
+          <p class="pub-authors">MD Rakibul Haque</p>
+          <p class="pub-journal">IEEE Xplore</p>
+          <div class="pub-tags"><span class="pub-tag">28 GHz</span><span class="pub-tag">Flexible Antenna</span><span class="pub-tag">Wearable</span><span class="pub-tag">Textile</span><span class="pub-tag">5G</span></div>
+          <a href="https://ieeexplore.ieee.org/document/10962792" target="_blank" rel="noreferrer" class="pub-doi">View Publication <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="pub-accent"></div>
+      </div>
+
+      <div class="pub-card">
+        <div class="pub-index">03</div>
+        <div class="pub-body">
+          <div class="pub-top-row"><span class="pub-type-badge">Conference Paper</span><span class="pub-year">2023</span></div>
+          <h3 class="pub-title">Development of a 28 GHz 5G Wideband Novel Compact Antenna for Wireless Body-Centric Network in Medical Applications</h3>
+          <p class="pub-authors">MD Rakibul Haque</p>
+          <p class="pub-journal">IEEE Xplore</p>
+          <div class="pub-tags"><span class="pub-tag">28 GHz</span><span class="pub-tag">5G</span><span class="pub-tag">Wideband</span><span class="pub-tag">Medical</span><span class="pub-tag">Body-Centric Network</span></div>
+          <a href="https://ieeexplore.ieee.org/document/10303479" target="_blank" rel="noreferrer" class="pub-doi">View Publication <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="pub-accent"></div>
+      </div>
+
+      <div class="pub-card">
+        <div class="pub-index">04</div>
+        <div class="pub-body">
+          <div class="pub-top-row"><span class="pub-type-badge">Conference Paper</span><span class="pub-year">2024</span></div>
+          <h3 class="pub-title">Dual Band G-Slot 5G Antenna for Wireless Body Area Network</h3>
+          <p class="pub-authors">MD Rakibul Haque</p>
+          <p class="pub-journal">IEEE Xplore</p>
+          <div class="pub-tags"><span class="pub-tag">Dual Band</span><span class="pub-tag">G-Slot</span><span class="pub-tag">5G</span><span class="pub-tag">WBAN</span><span class="pub-tag">Antenna Design</span></div>
+          <a href="https://ieeexplore.ieee.org/document/10441329" target="_blank" rel="noreferrer" class="pub-doi">View Publication <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="pub-accent"></div>
+      </div>
+
+      <div class="pub-card">
+        <div class="pub-index">05</div>
+        <div class="pub-body">
+          <div class="pub-top-row"><span class="pub-type-badge">Conference Paper</span><span class="pub-year">2025</span></div>
+          <h3 class="pub-title">Design and Analysis of 39GHz 5G Array Antennas for WBAN Applications</h3>
+          <p class="pub-authors">MD Rakibul Haque</p>
+          <p class="pub-journal">IEEE Xplore</p>
+          <div class="pub-tags"><span class="pub-tag">39 GHz</span><span class="pub-tag">Array Antenna</span><span class="pub-tag">5G</span><span class="pub-tag">WBAN</span><span class="pub-tag">mmWave</span></div>
+          <a href="https://ieeexplore.ieee.org/abstract/document/11103629" target="_blank" rel="noreferrer" class="pub-doi">View Publication <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+        <div class="pub-accent"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     SKILLS
+══════════════════════════════════ -->
+<section id="skills" class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-sub">What I work with</p>
+      <h2 class="section-title">Skills</h2>
+      <div class="section-line"><div class="section-line-fill"></div></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3 class="skill-group-title"><span class="skill-group-line"></span>Technical Skills</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Programmable Logic Controller (PLC)</span>
+          <span class="skill-tag">Human–Machine Interface (HMI)</span>
+          <span class="skill-tag">Machine Learning (Basic)</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Basic C</span>
+          <span class="skill-tag">MATLAB</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3 class="skill-group-title"><span class="skill-group-line"></span>Tools &amp; Platforms</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Microsoft Office</span>
+          <span class="skill-tag">Google Workspace</span>
+          <span class="skill-tag">CST Studio Suite</span>
+          <span class="skill-tag">LaTeX</span>
+          <span class="skill-tag">Microsoft CMT</span>
+          <span class="skill-tag">Siemens Platform</span>
+          <span class="skill-tag">Allen-Bradley</span>
+          <span class="skill-tag">Wecon Technology</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3 class="skill-group-title"><span class="skill-group-line"></span>Professional Skills</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Leadership</span>
+          <span class="skill-tag">Time Management</span>
+          <span class="skill-tag">Analytical &amp; Problem-Solving</span>
+          <span class="skill-tag">Data Analysis &amp; Interpretation</span>
+          <span class="skill-tag">Operation Management</span>
+          <span class="skill-tag">Teamwork &amp; Collaboration</span>
+          <span class="skill-tag">Attention to Detail</span>
+          <span class="skill-tag">Adaptability</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3 class="skill-group-title"><span class="skill-group-line"></span>Languages</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Bangla (Bilingual Proficiency)</span>
+          <span class="skill-tag">English (Full Professional – IELTS 6.5)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     CONTACT
+══════════════════════════════════ -->
+<section id="contact" class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-sub">Let's work together</p>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-line"><div class="section-line-fill"></div></div>
+    </div>
+    <div class="contact-grid">
+
+      <div class="contact-info">
+        <p class="contact-intro">Have a project in mind, an opportunity to discuss, or just want to say hello? I'd love to hear from you — fill in the form or reach out directly.</p>
+
+        <div class="contact-item">
+          <div class="contact-icon-wrap">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Email</div>
+            <a href="mailto:rakibul.haque.3112@gmail.com" class="contact-value">rakibul.haque.3112@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-wrap">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 2.18a2 2 0 012-2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Phone</div>
+            <a href="tel:01521544446" class="contact-value">01521-544446</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-wrap">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Location</div>
+            <span class="contact-value">Dhaka, Bangladesh</span>
+          </div>
+        </div>
+
+        <div class="contact-social-row">
+          <a href="https://linkedin.com/in/rakibul-erar" target="_blank" rel="noreferrer" class="contact-social-btn" title="LinkedIn">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://www.researchgate.net/profile/Rakibul-Haque-5" target="_blank" rel="noreferrer" class="contact-social-btn" title="ResearchGate">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.586 0H4.414A4.414 4.414 0 000 4.414v15.172A4.414 4.414 0 004.414 24h15.172A4.414 4.414 0 0024 19.586V4.414A4.414 4.414 0 0019.586 0zM12.24 16.932c-.88 1.265-2.16 1.917-3.79 1.917-2.66 0-4.56-1.99-4.56-4.73 0-2.75 1.92-4.76 4.58-4.76 1.59 0 2.85.63 3.72 1.87l-1.17.83c-.6-.86-1.44-1.29-2.51-1.29-1.76 0-3.03 1.32-3.03 3.33 0 2 1.27 3.31 3.04 3.31 1.08 0 1.93-.44 2.54-1.32l1.15.83zm4.94 1.72h-1.55v-3.97c0-1.08-.45-1.63-1.34-1.63-.51 0-.94.2-1.27.6-.33.4-.5.93-.5 1.59v3.41h-1.55V9.5h1.55v3.2c.55-.78 1.32-1.17 2.32-1.17 1.57 0 2.34.96 2.34 2.88v4.23z"/></svg>
+          </a>
+          <a href="https://scholar.google.com/citations?user=rakibul-haque" target="_blank" rel="noreferrer" class="contact-social-btn" title="Google Scholar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5h3.6v7.8c0 .9.7 1.7 1.6 1.7h1.6v5h10.4v-5h1.6c.9 0 1.6-.8 1.6-1.7V9.5H24L12 0z"/></svg>
+          </a>
+          <a href="https://orcid.org/0009-0003-4578-948X" target="_blank" rel="noreferrer" class="contact-social-btn" title="ORCID">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 01-.947-.947c0-.516.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 3.938-2.484 3.938-3.722 0-2.016-1.284-3.722-3.985-3.722h-2.25z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <form class="contact-form" onsubmit="sendEmail(event)">
+        <div class="form-row">
+          <input type="text"  id="cf-name"    class="form-input" placeholder="Your Name"          required />
+          <input type="email" id="cf-email"   class="form-input" placeholder="Your Email Address" required />
+        </div>
+        <textarea id="cf-message" class="form-input" rows="6" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn-primary" style="width:fit-content">Send Message →</button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     COPYRIGHT BAR
+══════════════════════════════════ -->
+<div class="copyright-bar">
+  <p>© <span id="year"></span> <span>MD Rakibul Haque</span>. All rights reserved.</p>
+</div>
+
+<!-- ══════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════ -->
+<script>
+  /* Year */
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* Navbar scroll + active link */
+  const navbar   = document.getElementById('navbar');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const sections = document.querySelectorAll('section[id]');
+
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+    const pos = window.scrollY + 130;
+    sections.forEach(sec => {
+      if (sec.offsetTop <= pos && sec.offsetTop + sec.offsetHeight > pos) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + sec.id);
+        });
+      }
+    });
+  }, { passive: true });
+
+  /* Smooth scroll */
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    closeMenu();
+    return false;
+  }
+
+  /* Mobile menu */
+  function toggleMenu() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+
+  /* Lightbox */
+  let lbCards = [], lbIndex = 0;
+
+  function openLightbox(card) {
+    lbCards  = Array.from(document.querySelectorAll('.gallery-card'));
+    lbIndex  = lbCards.indexOf(card);
+    renderLightbox();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    const multi = lbCards.length > 1;
+    document.getElementById('lb-prev').style.display = multi ? 'flex' : 'none';
+    document.getElementById('lb-next').style.display = multi ? 'flex' : 'none';
+  }
+  function renderLightbox() {
+    const card = lbCards[lbIndex];
+    const img  = card.querySelector('.gallery-img-wrap img');
+    document.getElementById('lb-img').src            = img.src;
+    document.getElementById('lb-img').alt            = img.alt;
+    document.getElementById('lb-title').textContent  = card.dataset.title  || '';
+    document.getElementById('lb-issuer').textContent = card.dataset.issuer || '';
+    document.getElementById('lb-date').textContent   = card.dataset.date   || '';
+    document.getElementById('lb-counter').textContent =
+      lbCards.length > 1 ? (lbIndex + 1) + ' / ' + lbCards.length : '';
+  }
+  function lbNav(dir) {
+    lbIndex = (lbIndex + dir + lbCards.length) % lbCards.length;
+    renderLightbox();
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(1);
+  });
+
+  /* Contact form → mailto */
+  function sendEmail(e) {
+    e.preventDefault();
+    const name    = document.getElementById('cf-name').value;
+    const email   = document.getElementById('cf-email').value;
+    const message = document.getElementById('cf-message').value;
+    const subject = encodeURIComponent('Portfolio Enquiry from ' + name);
+    const body    = encodeURIComponent('Hi,\n\nMy name is ' + name + ' (' + email + ').\n\n' + message);
+    window.location.href = 'mailto:rakibul.haque.3112@gmail.com?subject=' + subject + '&body=' + body;
+  }
+</script>
+
+</body>
+</html>
